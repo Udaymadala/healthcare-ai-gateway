@@ -1,0 +1,12 @@
+{
+  "gateway_name": "Clinical-RAG-Shield",
+  "version": "1.0.0",
+  "enforce_hipaa": true,
+  "redaction_style": "REDACT",
+  "allowed_entities": ["DATE_TIME"],
+  "blocked_entities": ["PERSON", "PHONE_NUMBER", "EMAIL_ADDRESS", "US_SSN", "LOCATION"],
+  "bias_monitoring": {
+    "eval_metric": "treatment_consistency",
+    "acceptable_variance_threshold": 0.05
+  }
+}
