@@ -28,38 +28,8 @@ graph TD
     end
     
     F --> G[Sanitized Vector Database / Secure LLM Inference]
-
-    style B fill:#1f6feb,stroke:#fff,stroke-width:2px,color:#fff
-    style Middleware Boundary Layer fill:#161b22,stroke:#30363d,stroke-width:1px
-    style G fill:#238636,stroke:#fff,stroke-width:2px,color:#fff
-
-🛡️ Vulnerability Mitigation & Threat MatrixThis architecture introduces structural controls against critical flaws identified in the OWASP Top 10 for LLM Applications:OWASP LLM Risk IDThreat CategoryGateway Defensive Control MechanismLLM01: Prompt InjectionIndirect/Direct behavioral overrides hidden in clinical documents.Implements system validation loops and context containment blocks.LLM02: Sensitive Info DisclosureAccidental leaking of proprietary or protected patient records (PHI).Deterministic Ingestion Guardrail: Microsoft Presidio interceptor replaces classified entities with [ENTITY_REDACTED] tokens pre-inference.LLM03: Training Data PoisoningMalicious or biased datasets skewing clinical logic.Evaluation Boundary Matrix: Audits uniformity thresholds across localized fuzzing datasets to flag anomalies.
-
-📋 Compliance & Framework Mapping
-By deploying this gateway layer into an enterprise workflow, the organization satisfies core administrative and technical controls across primary regulatory frameworks:
-
-1. NIST AI Risk Management Framework (AI RMF)
-GOVERN: Establishes organizational transparency and technical control policies using config/gateway_policy.json.
-
-MEASURE: Programmatically evaluates deployed model characteristics via the SafetyEvaluator uniformity tracking score.
-
-MANAGE: Employs automated awareness boundaries to continuously respond to and mitigate data-spill risks.
-
-2. HIPAA Technical Safeguards (§ 164.306)
-Data Integrity: Ensures patient records passed to third-party public AI APIs are strictly anonymized, preventing unauthorized exposure of names, corporate phone lines, emails, or government identifiers.
-
-🚀 Setup, Installation & Execution
-Prerequisites
-Ensure your Python 3.13 configuration contains the default English language pipelines optimized for Natural Language Processing (NLP) entity extraction:
-PowerShell
-# Install core libraries
+🛡️ Vulnerability Mitigation & Threat MatrixThis architecture introduces structural controls against critical flaws identified in the OWASP Top 10 for LLM Applications:OWASP LLM Risk IDThreat CategoryGateway Defensive Control MechanismLLM01: Prompt InjectionIndirect/Direct behavioral overrides hidden in clinical documents.Implements system validation loops and context containment blocks.LLM02: Sensitive Info DisclosureAccinement leaking of protected patient records (PHI).Deterministic Ingestion Guardrail: Microsoft Presidio interceptor replaces classified entities with [ENTITY_REDACTED] tokens pre-inference.LLM03: Training Data PoisoningMalicious or biased datasets skewing clinical logic.Evaluation Boundary Matrix: Audits uniformity thresholds across localized fuzzing datasets to flag anomalies.📋 Compliance & Framework MappingBy deploying this gateway layer into an enterprise workflow, the organization satisfies core administrative and technical controls across primary regulatory frameworks:1. NIST AI Risk Management Framework (AI RMF)GOVERN: Establishes organizational transparency and technical control policies using config/gateway_policy.json.MEASURE: Programmatically evaluates deployed model characteristics via the SafetyEvaluator uniformity tracking score.MANAGE: Employs automated awareness boundaries to continuously respond to and mitigate data-spill risks.2. HIPAA Technical Safeguards (§ 164.306)Data Integrity: Ensures patient records passed to third-party public AI APIs are strictly anonymized, preventing unauthorized exposure of names, corporate phone lines, emails, or government identifiers.🚀 Setup, Installation & ExecutionPrerequisitesEnsure your Python 3.13 configuration contains the default English language pipelines optimized for Natural Language Processing (NLP) entity extraction:PowerShell# Install core libraries
 pip install -r requirements.txt
 
 # Download required spaCy core pipeline 
 python -m spacy download en_core_web_lg
-
-Running the Validation Suite
-Execute the interactive primary gateway runtime to process adversarial test strings and evaluate behavioral uniformity matrices:
-
-PowerShell
-python src/app.py
