@@ -13,25 +13,19 @@ This project creates a **Digital Gateway** that sits between the patient databas
 
 ## 🧱 How the Data Flows (Step-by-Step)
 
-Here is how information moves securely through this system:
+This system acts as a secure bridge, processing data through four distinct layers:
 
-[Step 1: Patient Data] 
-       │
-       ▼
-[Step 2: Privacy Filter (Microsoft Presidio)]
-* Scans the text automatically.
-* Instantly removes private details (Names, Emails, Phone Numbers).
-* Replaces them with blank safety tags like [ENTITY_REDACTED].
-       │
-       ▼
-[Step 3: Fairness Audit (SafetyEvaluator Engine)]
-* Fuzzes demographic data (tests identical cases swapping "Male" and "Female").
-* Measures if the AI changes its behavior based on demographics.
-* Calculates a final safety score.
-       │
-       ▼
-[Step 4: Secure AI Processing]
-* The fully sanitized and audited data is safe to be processed.
+> **1. Patient Data Ingestion**
+> Raw clinical notes, medical records, or user prompts enter the pipeline.
+ 
+> **2. Privacy Filtering Layer (Microsoft Presidio)**
+> The gateway automatically scans the text, strips out private identifiers (Names, Phone Lines, Emails), and replaces them with anonymous safety tokens like `[ENTITY_REDACTED]`.
+
+> **3. Fairness & Bias Auditing Layer (SafetyEvaluator Engine)**
+> The system duplicates the sanitized text, swaps demographic variables (testing identical cases for both "Male" and "Female"), and verifies if the AI's internal recommendations remain uniform and unbiased.
+
+> **4. Downstream AI Processing**
+> The fully audited, anonymous, and verified data is safely passed to the Large Language Model or Vector Database for clinical use.
 
 ---
 
@@ -50,10 +44,6 @@ By placing this gateway in front of an AI system, we protect against critical se
 ### 1. Download System Dependencies
 To set up the language processing engine on your computer, open your terminal inside the project folder and run these two lines:
 
+```powershell
 pip install -r requirements.txt
 python -m spacy download en_core_web_lg
-
-### 2. Run the Gateway Test
-To run the automated security checks and see the filters in action, execute this command:
-
-python src/app.py
