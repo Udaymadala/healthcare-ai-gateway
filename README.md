@@ -1,35 +1,59 @@
 # Healthcare AI Gateway: Privacy and Bias Evaluation Shield
 
-An automated governance gateway and evaluation pipeline engineered to secure Large Language Models (LLMs) and Retrieval-Augmented Generation (RAG) applications processing highly regulated healthcare data.
+An automated safety guardrail built to protect patient data and ensure fairness when healthcare systems use Artificial Intelligence (AI).
 
-## 🎯 Project Overview & Objective
-Modern enterprise frameworks deploy generative AI rapidly without native boundary tracking for localized underlying datasets or real-time behavioral auditing. Within a clinical healthcare ecosystem, this introduces severe vectors for Protected Health Information (PHI) exposure and harmful algorithmic bias.
+## 🎯 What This Project Does (Overview)
+When hospitals and clinics use modern AI models to read patient charts, two major security risks happen:
+1. **Data Leaks:** Private patient data (like names, phone numbers, and emails) can accidentally be sent to public AI systems, violating medical privacy laws like HIPAA.
+2. **Hidden Bias:** An AI system might give different medical recommendations or risk scores to a male patient versus a female patient, even if they have the exact same symptoms.
 
-This repository implements a production-ready **Defensive Boundary Middleware Layer** that:
-1. Intercepts incoming pipeline strings to actively discover, flag, and redact specific identifiers mapped to HIPAA boundaries using **Microsoft Presidio**.
-2. Runs validation routines across targeted adversarial evaluation datasets to score clinical treatment uniformity, identifying response drift or demographic bias prior to main production releases.
+This project creates a **Digital Gateway** that sits between the patient database and the AI. It stops dangerous data before it reaches the model and runs consistency tests to ensure the AI treats everyone fairly.
 
 ---
 
-## 🧱 Architectural Boundary Topology
+## 🧱 How the Data Flows (Step-by-Step)
 
-The gateway functions as a deterministic proxy standing between upstream clinical data sources and downstream data ingestion points.
+Here is how information moves securely through this system:
 
-```mermaid
-graph TD
-    A[Raw Patient Charting & Ingestion Data] --> B[CLINICAL AI SECURITY GATEWAY]
-    
-    subgraph Middleware Boundary Layer
-        B --> C{Privacy Filter: Microsoft Presidio}
-        C -- PHI Detected --> D[Redact & Anonymize via policy.json]
-        C -- Clean Data --> E{GRC Audit: SafetyEvaluator}
-        D --> E
-        E -- Checks Demographic Fuzzing --> F[Score Treatment Uniformity]
-    end
-    
-    F --> G[Sanitized Vector Database / Secure LLM Inference]
-🛡️ Vulnerability Mitigation & Threat MatrixThis architecture introduces structural controls against critical flaws identified in the OWASP Top 10 for LLM Applications:OWASP LLM Risk IDThreat CategoryGateway Defensive Control MechanismLLM01: Prompt InjectionIndirect/Direct behavioral overrides hidden in clinical documents.Implements system validation loops and context containment blocks.LLM02: Sensitive Info DisclosureAccinement leaking of protected patient records (PHI).Deterministic Ingestion Guardrail: Microsoft Presidio interceptor replaces classified entities with [ENTITY_REDACTED] tokens pre-inference.LLM03: Training Data PoisoningMalicious or biased datasets skewing clinical logic.Evaluation Boundary Matrix: Audits uniformity thresholds across localized fuzzing datasets to flag anomalies.📋 Compliance & Framework MappingBy deploying this gateway layer into an enterprise workflow, the organization satisfies core administrative and technical controls across primary regulatory frameworks:1. NIST AI Risk Management Framework (AI RMF)GOVERN: Establishes organizational transparency and technical control policies using config/gateway_policy.json.MEASURE: Programmatically evaluates deployed model characteristics via the SafetyEvaluator uniformity tracking score.MANAGE: Employs automated awareness boundaries to continuously respond to and mitigate data-spill risks.2. HIPAA Technical Safeguards (§ 164.306)Data Integrity: Ensures patient records passed to third-party public AI APIs are strictly anonymized, preventing unauthorized exposure of names, corporate phone lines, emails, or government identifiers.🚀 Setup, Installation & ExecutionPrerequisitesEnsure your Python 3.13 configuration contains the default English language pipelines optimized for Natural Language Processing (NLP) entity extraction:PowerShell# Install core libraries
+[Step 1: Patient Data] 
+       │
+       ▼
+[Step 2: Privacy Filter (Microsoft Presidio)]
+* Scans the text automatically.
+* Instantly removes private details (Names, Emails, Phone Numbers).
+* Replaces them with blank safety tags like [ENTITY_REDACTED].
+       │
+       ▼
+[Step 3: Fairness Audit (SafetyEvaluator Engine)]
+* Fuzzes demographic data (tests identical cases swapping "Male" and "Female").
+* Measures if the AI changes its behavior based on demographics.
+* Calculates a final safety score.
+       │
+       ▼
+[Step 4: Secure AI Processing]
+* The fully sanitized and audited data is safe to be processed.
+
+---
+
+## 🛡️ Major Security Flaws Defeated
+
+By placing this gateway in front of an AI system, we protect against critical security vulnerabilities:
+
+- **Preventing Sensitive Data Exposure:** By using deterministic text filters, private health details are stripped out completely *before* data can leave the internal environment. 
+- **Catching Biased Logic:** The system continuously tracks treatment uniformity across testing groups, raising a red flag if the AI's logic begins to drift or discriminate.
+- **Framework Grounding:** This process aligns directly with standard industry defensive practices, including the **NIST AI Risk Management Framework** and **HIPAA Technical Safeguards**.
+
+---
+
+## 🚀 Setup & Execution Instructions
+
+### 1. Download System Dependencies
+To set up the language processing engine on your computer, open your terminal inside the project folder and run these two lines:
+
 pip install -r requirements.txt
-
-# Download required spaCy core pipeline 
 python -m spacy download en_core_web_lg
+
+### 2. Run the Gateway Test
+To run the automated security checks and see the filters in action, execute this command:
+
+python src/app.py
