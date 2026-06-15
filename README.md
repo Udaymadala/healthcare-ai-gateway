@@ -12,24 +12,26 @@ This repository implements a production-ready **Defensive Boundary Middleware La
 ---
 
 ## 🧱 Architectural Boundary Topology
-The gateway functions as a deterministic proxy standing between upstream data sources and the core machine learning inference engine.
 
-```text
-  [Raw Patient Charting / Ingestion Data]
-                   │
-                   ▼
-  ┌────────────────────────────────────────────────────────┐
-  │         CLINICAL AI SECURITY GATEWAY (Middleware)       │
-  │                                                        │
-  │   ├── Ingestion Boundary: [Microsoft Presidio]         │
-  │   │   └── Analyzes & strips PHI based on policy.json   │
-  │   │                                                    │
-  │   └── Evaluation Boundary: [SafetyEvaluator Engine]    │
-  │       └── Fuzzes demographics for consistency audits.  │
-  └────────────────────────────────────────────────────────┘
-                   │
-                   ▼
-  [Sanitized Vector Database / Secure LLM Inference]
+The gateway functions as a deterministic proxy standing between upstream clinical data sources and downstream data ingestion points.
+
+```mermaid
+graph TD
+    A[Raw Patient Charting & Ingestion Data] --> B[CLINICAL AI SECURITY GATEWAY]
+    
+    subgraph Middleware Boundary Layer
+        B --> C{Privacy Filter: Microsoft Presidio}
+        C -- PHI Detected --> D[Redact & Anonymize via policy.json]
+        C -- Clean Data --> E{GRC Audit: SafetyEvaluator}
+        D --> E
+        E -- Checks Demographic Fuzzing --> F[Score Treatment Uniformity]
+    end
+    
+    F --> G[Sanitized Vector Database / Secure LLM Inference]
+
+    style B fill:#1f6feb,stroke:#fff,stroke-width:2px,color:#fff
+    style Middleware Boundary Layer fill:#161b22,stroke:#30363d,stroke-width:1px
+    style G fill:#238636,stroke:#fff,stroke-width:2px,color:#fff
 
 🛡️ Vulnerability Mitigation & Threat MatrixThis architecture introduces structural controls against critical flaws identified in the OWASP Top 10 for LLM Applications:OWASP LLM Risk IDThreat CategoryGateway Defensive Control MechanismLLM01: Prompt InjectionIndirect/Direct behavioral overrides hidden in clinical documents.Implements system validation loops and context containment blocks.LLM02: Sensitive Info DisclosureAccidental leaking of proprietary or protected patient records (PHI).Deterministic Ingestion Guardrail: Microsoft Presidio interceptor replaces classified entities with [ENTITY_REDACTED] tokens pre-inference.LLM03: Training Data PoisoningMalicious or biased datasets skewing clinical logic.Evaluation Boundary Matrix: Audits uniformity thresholds across localized fuzzing datasets to flag anomalies.
 
