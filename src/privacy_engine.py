@@ -11,6 +11,14 @@ class HIPAAShield:
         # Initialize Presidio Engine
         self.analyzer = AnalyzerEngine()
         self.anonymizer = AnonymizerEngine()
+        from presidio_analyzer import PatternRecognizer, Pattern
+        ssn_pattern = Pattern(name="ssn_regex", regex=r"\b\d{3}-\d{2}-\d{4}\b", score=1.0)
+        custom_ssn_recognizer = PatternRecognizer(
+            supported_entity="US_SSN", 
+            patterns=[ssn_pattern],
+            context=["ssn", "social", "security", "usssn"]
+        )
+        self.analyzer.registry.add_recognizer(custom_ssn_recognizer)
         self.blocked_entities = self.policy.get("blocked_entities", [])
 
     def sanitize_clinical_notes(self, text: str) -> str:
